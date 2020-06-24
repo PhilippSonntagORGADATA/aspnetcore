@@ -89,14 +89,7 @@ export function navigateTo(uri: string, forceLoad: boolean, replace: boolean = f
   if (!forceLoad && isWithinBaseUriSpace(absoluteUri)) {
     // It's an internal URL, so do client-side navigation
     performInternalNavigation(absoluteUri, false, replace);
-  } else if (forceLoad && locationStub.href === uri) {
-    // Force-loading the same URL you're already on requires special handling to avoid
-    // triggering browser-specific behavior issues.
-    // For details about what this fixes and why, see https://github.com/dotnet/aspnetcore/pull/10839
-    const temporaryUri = uri + '?';
-    history.replaceState(null, '', temporaryUri);
-    location.replace(uri);
-  } else if (replace){
+  } else if (replace) {
     history.replaceState(null, '', absoluteUri)
   } else {
     // It's either an external URL, or forceLoad is requested, so do a full page load
